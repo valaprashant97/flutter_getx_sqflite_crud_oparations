@@ -1,11 +1,12 @@
 import '../controller/user_controller.dart';
 import '../services/database_service/tbl_user.dart';
 import '../utils/import_export.dart';
+import 'add_user_list.dart';
 
 class UserListPage extends StatelessWidget {
   UserListPage({super.key});
 
-  UserController userController = Get.find();
+  final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,9 @@ class UserListPage extends StatelessWidget {
         title: Text('User List'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await Get.to(() => AddUserPage());
+            },
             icon: Icon(Icons.add),
           ),
         ],
@@ -37,6 +40,31 @@ class UserListPage extends StatelessWidget {
                       userController.userlist[index][TblUser
                           .userName],
                     ),
+                    subtitle: Text(
+                      userController.userlist[index][TblUser
+                          .userPhone],
+                    ),
+                    trailing:Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            await Get.to(() => AddUserPage());
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            await userController.deleteUser(
+                              userController.userlist[index][TblUser
+                                  .userID],
+                            );
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+
                   );
                 },
                 itemCount: userController.userlist.length,

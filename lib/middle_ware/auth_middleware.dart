@@ -1,15 +1,14 @@
-
-import 'package:get/get_navigation/src/routes/route_middleware.dart';
-
 import '../routes/routes.dart';
 import '../utils/import_export.dart';
 
 class AuthMiddleware extends GetMiddleware {
+  bool get _isLogin => false; // TODO: Update with actual auth check
+
   @override
   RouteSettings? redirect(String? route) {
-    bool isLogin = false;
-    return !isLogin
-        ? RouteSettings(name: Routes.dashBoardPage)
-        : null;
+    if (!_isLogin) {
+      return RouteSettings(name: Routes.dashBoardPage);
+    }
+    return null;
   }
 }

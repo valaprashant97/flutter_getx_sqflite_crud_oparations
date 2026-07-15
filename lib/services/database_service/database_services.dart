@@ -1,16 +1,13 @@
 import 'package:sqflite/sqflite.dart';
 
 abstract class DatabaseServices {
-  static const String dbName = 'crud.db';
-  int version = 1;
-
   Future<Database> initDatabase();
 
-  Future<List<Map<String, dynamic>>> readData(String query);
+  Future<List<Map<String, dynamic>>> readData(String query, [List<dynamic>? arguments]);
 
-  void deleteData() {}
+  Future<int> deleteData(String query, [List<dynamic>? arguments]);
 
-  void updateData() {}
+  Future<int> updateData(String query, [List<dynamic>? arguments]);
 
-  void insertData() {}
+  Future<int> insertData(String query, [List<dynamic>? arguments]);
 }
