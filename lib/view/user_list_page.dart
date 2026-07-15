@@ -49,7 +49,9 @@ class UserListPage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () async {
-                            await Get.to(() => AddUserPage());
+                            await Get.to(() => AddUserPage(
+                              user: userController.userlist[index],
+                            ));
                           },
                           icon: Icon(Icons.edit),
                         ),

@@ -4,9 +4,11 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import '../controller/user_controller.dart';
+import '../services/database_service/tbl_user.dart';
 
 class AddUserPage extends StatefulWidget {
-  const AddUserPage({super.key});
+  final Map<String, dynamic>? user;
+  const AddUserPage({super.key, this.user});
 
   @override
   State<AddUserPage> createState() => _AddUserPageState();
@@ -21,10 +23,20 @@ class _AddUserPageState extends State<AddUserPage> {
 
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.user != null) {
+      _nameController.text = widget.user![TblUser.userName];
+      _phoneController.text = widget.user![TblUser.userPhone];
+      _emailController.text = widget.user![TblUser.userEmail];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add User Page"),
+        title: Text(widget.user == null ? "Add User Page" : "Update User Page"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -56,14 +68,23 @@ class _AddUserPageState extends State<AddUserPage> {
             // Save Button
               ElevatedButton(
               onPressed: () async {
-                await userController.addUser(
-                  _nameController.text,
-                  _phoneController.text,
-                  _emailController.text,
-                );
+                if (widget.user == null) {
+                  await userController.addUser(
+                    _nameController.text,
+                    _phoneController.text,
+                    _emailController.text,
+                  );
+                } else {
+                  await userController.updateUser(
+                    widget.user![TblUser.userID],
+                    _nameController.text,
+                    _phoneController.text,
+                    _emailController.text,
+                  );
+                }
                 Get.back();
               },
-              child: const Text("Add User"),
+              child: Text(widget.user == null ? "Add User" : "Update User"),
             ),
           ],
         ),
